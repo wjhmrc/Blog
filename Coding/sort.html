@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="Madoko, version 1.1.5" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta name="author" content="WJHMRC" />
+  <title>算法浅析之排序（C++实现）（一）</title>
+  <style type="text/css"  class="link">
+  /*# sourceURL=madoko.css */
+  
+  .madoko .toc>.tocblock .tocblock .tocblock {
+    margin-left: 2.25em;
+  }
+  .madoko .toc>.tocblock .tocblock {
+    margin-left: 1.5em;
+  }
+  .madoko .toc-contents>.tocblock>.tocitem {
+    font-weight: bold;
+  }
+  .madoko .toc {
+    margin-top: 1em;
+  }
+  .madoko p.para-continue {
+    margin-bottom: 0pt;
+  }
+  .madoko .para-block+p {
+    margin-top: 0pt;
+  }
+  .madoko ul.para-block, .madoko ol.para-block {
+    margin-top: 0pt;
+    margin-bottom: 0pt;
+  }
+  .madoko ul.para-end, .madoko ol.para-end {
+    margin-bottom: 1em;
+  }
+  .madoko dl {
+    margin-left: 0em;
+  }
+  .madoko blockquote {
+    font-style: italic;
+  }
+  .madoko a.localref {
+    text-decoration: none;
+  }
+  .madoko a.localref:hover {
+    text-decoration: underline;
+  }
+  .madoko .footnotes {
+    font-size: smaller;
+    margin-top: 2em;
+  }
+  .madoko .footnotes hr {
+    width: 50%;
+    text-align: left;
+  }
+  .madoko .footnote { 
+    margin-left: 1em;
+  }
+  .madoko .footnote-before {
+    margin-left: -1em;
+    width: 1em;
+    display: inline-block;
+  }
+  .madoko .align-center, .madoko .align-center>p {
+    text-align: center !important;
+  }
+  .madoko .align-center pre {
+    text-align: left;
+  }
+  .madoko .align-center>* {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-left, .madoko .align-left>p {
+    text-align: left !important;
+  }
+  .madoko .align-left>* {
+    margin-left: 0pt !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-right, .madoko .align-right>p {
+    text-align: right !important;
+  }
+  .madoko .align-right>* {
+    margin-left: auto !important;
+    margin-right: 0pt !important;
+  }
+  .madoko .align-center>table,
+  .madoko .align-left>table,
+  .madoko .align-right>table {
+    text-align: left !important;
+  }
+  .madoko .equation-before {
+    float: right;
+  }
+  .madoko .bibitem {
+    font-size: smaller;
+  }
+  .madoko .bibsearch {
+    font-size: x-small;
+    text-decoration:none;
+    color: black;
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  .madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation, .madoko div.math {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .figure {
+    padding: 0.5em;
+    margin-left: 0pt;
+    margin-right: 0pt;
+  }
+  .madoko .hidden {
+    display: none;
+  }
+  .madoko .invisible {
+    visibility: hidden;
+  }
+  .madoko.preview .invisible {
+    visibility: visible;
+    opacity: 0.5;
+  }
+  .madoko code.code, .madoko span.code {
+    white-space: pre-wrap;
+  }
+  .madoko hr, hr.madoko {
+    border: none;
+    border-bottom: black solid 1px;
+    margin-bottom: 0.5ex;
+  }
+  .madoko .framed>*:first-child {
+    margin-top: 0pt;
+  }
+  .madoko .framed>*:last-child {
+    margin-bottom: 0pt;
+  }
+  .madoko ul.list-style-type-dash {
+      list-style-type: none !important;
+  }
+  .madoko ul.list-style-type-dash > li:before {
+      content: "\2013"; 
+      position: absolute;
+      margin-left: -1em; 
+  }
+  .madoko table.madoko {
+    border-collapse: collapse;
+  }
+  .madoko td, .madoko th {
+    padding: 0ex 0.5ex;
+    margin: 0pt;
+    vertical-align: top;
+  }
+  .madoko .cell-border-left {
+    border-left: 1px solid black;
+  }
+  .madoko .cell-border-right {
+    border-right: 1px solid black;
+  }
+  .madoko thead>tr:first-child>.cell-line,
+  .madoko tbody:first-child>tr:first-child>.cell-line {
+    border-top: 1px solid black;
+    border-bottom: none;
+  }
+  .madoko .cell-line, .madoko .cell-double-line {
+    border-bottom: 1px solid black;
+    border-top: none;
+  }
+  .madoko .cell-double-line {
+    border-top: 1px solid black;
+    padding-top: 1.5px !important;
+  }
+  .madoko .input-mathpre .MathJax_Display {
+    text-align: left !important;
+  }
+  .madoko div.input-mathpre {
+    text-align: left;
+    margin-top: 1.5ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .math-rendering {
+    text-align: left;
+    white-space: pre;
+    color: gray;
+  }
+  .madoko .mathdisplay {
+    text-align: center;
+  }
+  .madoko .pretty table {
+    border-collapse: collapse;
+  }
+  .madoko .pretty td {
+    padding: 0em;
+  }
+  .madoko .pretty td.empty {
+    min-width: 1.5ex;
+  }
+  .madoko .pretty td.expander {
+    width: 100em;
+  }
+  body.madoko, .madoko .serif {
+    font-family: Cambria,"Times New Roman","Liberation Serif","Times",serif;
+  }
+  .madoko .sans-serif {
+    font-family: "Calibri", "Optima", sans-serif;
+  }
+  .madoko .symbol {
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  body.madoko {  
+    -webkit-text-size-adjust: 100%;       
+    text-rendering: optimizeLegibility;
+  }
+  body.madoko {
+    max-width: 88ex; 
+    margin: 1em auto;
+    padding: 0em 2em;  
+  }
+  body.preview.madoko {
+    padding: 0em 1em;
+  }
+  .madoko p {
+    text-align: justify;
+  }
+  .madoko h1, .madoko h2, .madoko h3, .madoko h4 { 
+    margin-top: 1.22em; 
+    margin-bottom: 1ex;
+  }
+  .madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  { 
+    margin-top: 1ex;    
+  }
+  .madoko h5, .madoko h6 { 
+    margin-top: 1ex;
+    font-size: 1em;
+  }
+  .madoko h5 { 
+    margin-bottom: 0.5ex;
+  }
+  .madoko h5 + p {
+    margin-top: 0.5ex;
+  }
+  .madoko h6 { 
+    margin-bottom: 0pt;
+  }
+  .madoko h6 + p {
+    margin-top: 0pt;
+  }
+  .madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt, 
+  .madoko .monospace, .madoko .token-indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
+    font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
+    font-size: 0.85em;
+  }
+  .madoko pre code, .madoko .token-indent {
+    font-size: 0.95em;
+  }
+  .madoko pre code {
+    font-family: inherit !important;
+  }
+  .madoko ol.linenums li {
+    background-color: white;
+    list-style-type: decimal;
+  }
+  .madoko .remote {
+    background-color: #F0FFF0;
+  }
+  .madoko .remote + * {
+    margin-top: 0pt;
+  }
+  @media print {
+    body.madoko {
+      font-size: 10pt;
+    }
+    @page {
+      margin: 1in 1.5in;
+    }
+  }
+  @media only screen and (max-device-width:1024px) {
+    body.madoko {
+      padding: 0em 0.5em;    
+    }
+    .madoko li {
+      text-align: left;
+    }
+  }
+  
+    </style>
+  
+  </head>
+<body class="madoko">
+
+<div class="body madoko" style="line-adjust:0">
+
+<div class="titleblock align-center para-block" style="text-align:center;line-adjust:0">
+<div class="titleheader align-center" style="text-align:center;line-adjust:0">
+<div class="title para-block" style="font-size:xx-large;font-weight:bold;margin-bottom:0.5ex;line-adjust:0">算法浅析之排序（C++实现）（一）</div></div>
+<div class="authors align-center" style="text-align:center;width:80%;line-adjust:0"><table class="authorrow columns block" style="margin-top:2ex;width:100%;line-adjust:0">
+<tbody><tr><td class="author column" style="text-align:center;line-adjust:0">
+<div class="authorname" style="font-size:large;line-adjust:0">WJHMRC</div></td></tr></tbody></table></div></div>
+<blockquote>
+
+<p class="p noindent">排序大概是应用最为广泛，也是最为基础的算法之一，同时，它也是我们步入算法世界的第一步。<br>
+所谓排序，就是使一串记录，按照其中的某个或某些关键字的大小，递增或递减的排列起来的操作。
+而排序算法，就是使记录按照要求排序的方法。
+在早期的算法研究中，科学家们认为，排序算法的时间复杂度是无法超越 <svg  class="math-inline math-render-svg math" style="vertical-align:-0.2957em;height:1.1692em;width:2.7807em" viewBox='34.67 53.39 26.483 11.135' ><desc>$O(n^{2})$</desc><g id='math-189317'><use x='34.869' xlink:href='#g0-79' y='61.836'/><use x='42.745' xlink:href='#g1-40' y='61.836'/><use x='46.62' xlink:href='#g0-110' y='61.836'/><use x='52.6' xlink:href='#g2-50' y='58.22'/><use x='57.069' xlink:href='#g1-41' y='61.836'/></g></svg> 的，直到出现了以<strong class="strong-star2">希尔排序(Shell Sort）</strong>为代表的第一批时间复杂度为 <svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0879em;width:4.6391em" viewBox='88.468 54.164 44.182 10.361' ><desc>$O(n\log n)$</desc><g id='math-f49341'><use x='88.667' xlink:href='#g0-79' y='61.836'/><use x='96.544' xlink:href='#g1-40' y='61.836'/><use x='100.418' xlink:href='#g0-110' y='61.836'/><use x='108.058' xlink:href='#g1-108' y='61.836'/><use x='110.826' xlink:href='#g1-111' y='61.836'/><use x='115.807' xlink:href='#g1-103' y='61.836'/><use x='122.587' xlink:href='#g0-110' y='61.836'/><use x='128.567' xlink:href='#g1-41' y='61.836'/></g></svg> 级的排序算法，人们才开始大量研究排序算法的改进。    
+</p>
+<p class="p indent">我们可以依据排序方式，将目前常用的排序算法分为以下几类：
+</p>
+<ul class="ul list-star compact">
+<li class="li ul-li list-star-li compact-li">插入排序
+</li>
+<li class="li ul-li list-star-li compact-li">交换排序
+</li>
+<li class="li ul-li list-star-li compact-li">选择排序
+</li>
+<li class="li ul-li list-star-li compact-li">归并排序
+</li>
+<li class="li ul-li list-star-li compact-li">其它
+</li></ul>
+
+<p class="p noindent">那么，本文的第一部分，介绍的是插入排序，第二部分，将介绍交换排序，第三部分介绍选择排序，第四部分介绍归并排序和其他一些有趣的排序算法。
+</p></blockquote><h2 id="section" class="h1" data-heading-depth="1" style="display:block"><span class="heading-before"><span class="heading-label">1</span>.&#8194;</span>插入排序</h2><h3 id="section" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">1.1</span>.&#8194;</span>直接插入排序</h3><h4 id="section" class="h3" data-heading-depth="3" style="display:block"><span class="heading-before"><span class="heading-label">1.1.1</span>.&#8194;</span>原理</h4>
+<p class="p noindent">直接插入排序是最基本的排序算法，思路很简单，就是将待排序的元素依次按大小直接插入到已经排好序的序列中。比如打扑克的时候，我们抓到一张5，就直接插到手里牌的4和6中间。这就是直接插入。
+</p><h4 id="section" class="h3" data-heading-depth="3" style="display:block"><span class="heading-before"><span class="heading-label">1.1.2</span>.&#8194;</span>编程实现</h4>
+<p class="p noindent">代码如下：
+</p>
+<pre class="para-block pre-fenced pre-fenced3 language-cpp lang-cpp cpp colorized" style="display:block"><code><span style="color:navy">#</span><span style="color:navy">include</span><span style="color:maroon">&lt;iostream&gt;</span>
+<span style="color:navy">#</span><span style="color:navy">include</span><span style="color:maroon">&quot;sqList.h&quot;</span>
+<span style="color:blue">using</span> <span style="color:blue">namespace</span> <span style="color:navy">std</span>;
+
+<span style="color:teal">void</span> InsertSort(<span style="color:teal">SqList</span>);
+
+<span style="color:teal">int</span> main()
+{
+    SqList <span style="color:teal">L</span> = <span style="color:blue">new</span> List();
+    Create(<span style="color:teal">L</span>);
+    <span style="color:teal">int</span> a[] = {<span class="constant" style="color:purple">0</span>,<span class="constant" style="color:purple">1</span>,<span class="constant" style="color:purple">4</span>,<span class="constant" style="color:purple">3</span>,<span class="constant" style="color:purple">7</span>,<span class="constant" style="color:purple">2</span>,<span class="constant" style="color:purple">5</span>,<span class="constant" style="color:purple">4</span>,<span class="constant" style="color:purple">3</span>,<span class="constant" style="color:purple">6</span>,<span class="constant" style="color:purple">5</span>};
+    <span style="color:teal">L</span>-&gt;data = a;
+    <span style="color:teal">L</span>-&gt;length = <span class="constant" style="color:purple">11</span>;
+    Show(<span style="color:teal">L</span>);
+    InsertSort(<span style="color:teal">L</span>);
+    Show(<span style="color:teal">L</span>);
+    getchar();
+    <span style="color:blue">return</span> <span class="constant" style="color:purple">0</span>;
+}
+
+<span style="color:teal">void</span> InsertSort(SqList <span style="color:teal">L</span>)
+{
+    <span style="color:blue">for</span>(<span style="color:teal">int</span> i=<span class="constant" style="color:purple">2</span>;i&lt;<span style="color:teal">L</span>-&gt;length;i++){
+        <span style="color:blue">if</span>(<span style="color:teal">L</span>-&gt;data[i-<span class="constant" style="color:purple">1</span>] &gt; <span style="color:teal">L</span>-&gt;data[i]){
+            <span style="color:teal">L</span>-&gt;data[<span class="constant" style="color:purple">0</span>] = <span style="color:teal">L</span>-&gt;data[i];
+            <span style="color:teal">int</span> j;
+            <span style="color:blue">for</span>(j=i;j&gt;<span class="constant" style="color:purple">1</span>&amp;&amp;<span style="color:teal">L</span>-&gt;data[j-<span class="constant" style="color:purple">1</span>]&gt;<span style="color:teal">L</span>-&gt;data[<span class="constant" style="color:purple">0</span>];j--){
+                <span style="color:teal">L</span>-&gt;data[j] = <span style="color:teal">L</span>-&gt;data[j-<span class="constant" style="color:purple">1</span>];
+            }
+            <span style="color:teal">L</span>-&gt;data[j] = <span style="color:teal">L</span>-&gt;data[<span class="constant" style="color:purple">0</span>];
+        }
+    }
+}</code></pre><h3 id="section" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">1.2</span>.&#8194;</span>希尔排序</h3><h4 id="section" class="h3" data-heading-depth="3" style="display:block"><span class="heading-before"><span class="heading-label">1.2.1</span>.&#8194;</span>原理</h4>
+<p class="p noindent">无疑，直接插入排序虽然原理很简单，但它的性能并不总是很好。科学家希尔在它的基础上进行改进，发明了希尔算法。<br>
+希尔算法引入了增量序列的概念，将待排序列按照增量序列分组，每一次排序，目的都是让这个序列“基本有序”。<br>
+具体来说，比如我选取一个增量序列为{8 , 4 , 2 , 1}，那么我们第一次每隔8个位置选取一个数，组成一个新序列，并对它进行直接插入排序。
+以此类推，直到增量为1时，就将整个序列完整地排序了。
+</p><h4 id="section" class="h3" data-heading-depth="3" style="display:block"><span class="heading-before"><span class="heading-label">1.2.2</span>.&#8194;</span>编程实现</h4>
+<pre class="para-block pre-fenced pre-fenced3 language-cpp lang-cpp cpp colorized" style="display:block"><code><span style="color:navy">#</span><span style="color:navy">include</span><span style="color:maroon">&lt;iostream&gt;</span>
+<span style="color:navy">#</span><span style="color:navy">include</span><span style="color:maroon">&quot;sqList.h&quot;</span>
+<span style="color:blue">using</span> <span style="color:blue">namespace</span> <span style="color:navy">std</span>;
+
+<span style="color:teal">void</span> ShellSort(<span style="color:teal">SqList</span>);
+
+<span style="color:teal">int</span> main()
+{ 
+    SqList <span style="color:teal">L</span> = <span style="color:blue">new</span> List();
+    Create(<span style="color:teal">L</span>);
+    <span style="color:teal">int</span> a[] = {<span class="constant" style="color:purple">0</span>,<span class="constant" style="color:purple">1</span>,<span class="constant" style="color:purple">4</span>,<span class="constant" style="color:purple">3</span>,<span class="constant" style="color:purple">7</span>,<span class="constant" style="color:purple">2</span>,<span class="constant" style="color:purple">5</span>,<span class="constant" style="color:purple">4</span>,<span class="constant" style="color:purple">3</span>,<span class="constant" style="color:purple">6</span>,<span class="constant" style="color:purple">5</span>};
+    <span style="color:teal">L</span>-&gt;data = a;
+    <span style="color:teal">L</span>-&gt;length = <span class="constant" style="color:purple">11</span>;
+    Show(<span style="color:teal">L</span>);
+    ShellSort(<span style="color:teal">L</span>);
+    Show(<span style="color:teal">L</span>);
+    getchar();
+    <span style="color:blue">return</span> <span class="constant" style="color:purple">0</span>;
+}
+
+<span style="color:teal">void</span> ShellSort(SqList <span style="color:teal">L</span>)
+{
+    <span style="color:blue">for</span>(<span style="color:teal">int</span> <span style="color:teal">Increment</span> = <span style="color:teal">L</span>-&gt;length/<span class="constant" style="color:purple">3</span>+<span class="constant" style="color:purple">1</span>; <span style="color:teal">Increment</span>&gt;<span class="constant" style="color:purple">0</span>;<span style="color:teal">Increment</span>--){
+        <span style="color:blue">for</span>(<span style="color:teal">int</span> i=<span style="color:teal">Increment</span>+<span class="constant" style="color:purple">1</span>;i&lt;<span style="color:teal">L</span>-&gt;length;i++){
+            <span style="color:blue">if</span>(<span style="color:teal">L</span>-&gt;data[i-<span style="color:teal">Increment</span>] &gt; <span style="color:teal">L</span>-&gt;data[i]){
+                <span style="color:teal">L</span>-&gt;data[<span class="constant" style="color:purple">0</span>] = <span style="color:teal">L</span>-&gt;data[i];
+                <span style="color:teal">int</span> j;
+                <span style="color:blue">for</span>(j=i;j&gt;<span style="color:teal">Increment</span>&amp;&amp;<span style="color:teal">L</span>-&gt;data[j-<span style="color:teal">Increment</span>]&gt;<span style="color:teal">L</span>-&gt;data[<span class="constant" style="color:purple">0</span>];j-=<span style="color:teal">Increment</span>){
+                    <span style="color:teal">L</span>-&gt;data[j] = <span style="color:teal">L</span>-&gt;data[j-<span style="color:teal">Increment</span>];
+                }
+                <span style="color:teal">L</span>-&gt;data[j] = <span style="color:teal">L</span>-&gt;data[<span class="constant" style="color:purple">0</span>];
+            }
+        }
+    }
+}</code></pre><h4 id="section" class="h3" data-heading-depth="3" style="display:block"><span class="heading-before"><span class="heading-label">1.2.3</span>.&#8194;</span>算法评价</h4>
+<p class="p noindent">希尔排序算法的时间复杂度根据选取的增量序列的不同而有所不同，介于[<svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0879em;width:4.6391em" viewBox='88.468 54.164 44.182 10.361' ><desc>$O(n\log n)$</desc><g id='math-f49341'><use x='88.667' xlink:href='#g0-79' y='61.836'/><use x='96.544' xlink:href='#g1-40' y='61.836'/><use x='100.418' xlink:href='#g0-110' y='61.836'/><use x='108.058' xlink:href='#g1-108' y='61.836'/><use x='110.826' xlink:href='#g1-111' y='61.836'/><use x='115.807' xlink:href='#g1-103' y='61.836'/><use x='122.587' xlink:href='#g0-110' y='61.836'/><use x='128.567' xlink:href='#g1-41' y='61.836'/></g></svg>,<svg  class="math-inline math-render-svg math" style="vertical-align:-0.2957em;height:1.1692em;width:2.7807em" viewBox='34.67 53.39 26.483 11.135' ><desc>$O(n^{2})$</desc><g id='math-189317'><use x='34.869' xlink:href='#g0-79' y='61.836'/><use x='42.745' xlink:href='#g1-40' y='61.836'/><use x='46.62' xlink:href='#g0-110' y='61.836'/><use x='52.6' xlink:href='#g2-50' y='58.22'/><use x='57.069' xlink:href='#g1-41' y='61.836'/></g></svg>]之间。<br>
+由于其排序过程中各不相邻元素互相替换，导致该算法的稳定性并不好。
+</p><span data-line=""></span></div>
+<svg id='math-svg-paths' style='display:none' version='1.1' viewBox='0 0 0 0' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+<defs>
+<path d='M7.372 -4.344C7.372 -5.948 6.316 -7.024 4.832 -7.024C2.68 -7.024 0.488 -4.762 0.488 -2.441C0.488 -0.787 1.604 0.219 3.039 0.219C5.151 0.219 7.372 -1.963 7.372 -4.344ZM3.098 -0.04C2.112 -0.04 1.415 -0.847 1.415 -2.162C1.415 -2.6 1.554 -4.055 2.321 -5.22C3.009 -6.257 3.985 -6.775 4.772 -6.775C5.589 -6.775 6.486 -6.217 6.486 -4.732C6.486 -4.015 6.217 -2.461 5.23 -1.235C4.752 -0.628 3.935 -0.04 3.098 -0.04Z' id='g0-79'/>
+<path d='M0.877 -0.588C0.847 -0.438 0.787 -0.209 0.787 -0.159C0.787 0.02 0.927 0.11 1.076 0.11C1.196 0.11 1.375 0.03 1.445 -0.169C1.455 -0.189 1.574 -0.658 1.634 -0.907L1.853 -1.803C1.913 -2.022 1.973 -2.242 2.022 -2.471C2.062 -2.64 2.142 -2.929 2.152 -2.969C2.301 -3.278 2.829 -4.184 3.776 -4.184C4.224 -4.184 4.314 -3.816 4.314 -3.487C4.314 -2.869 3.826 -1.594 3.666 -1.166C3.577 -0.936 3.567 -0.817 3.567 -0.707C3.567 -0.239 3.915 0.11 4.384 0.11C5.32 0.11 5.689 -1.345 5.689 -1.425C5.689 -1.524 5.599 -1.524 5.569 -1.524C5.469 -1.524 5.469 -1.494 5.42 -1.345C5.22 -0.667 4.892 -0.11 4.403 -0.11C4.234 -0.11 4.164 -0.209 4.164 -0.438C4.164 -0.687 4.254 -0.927 4.344 -1.146C4.533 -1.674 4.951 -2.77 4.951 -3.337C4.951 -4.005 4.523 -4.403 3.806 -4.403C2.909 -4.403 2.421 -3.766 2.252 -3.537C2.202 -4.095 1.793 -4.403 1.335 -4.403S0.687 -4.015 0.588 -3.836C0.428 -3.497 0.289 -2.909 0.289 -2.869C0.289 -2.77 0.389 -2.77 0.408 -2.77C0.508 -2.77 0.518 -2.78 0.578 -2.999C0.747 -3.706 0.946 -4.184 1.305 -4.184C1.504 -4.184 1.614 -4.055 1.614 -3.726C1.614 -3.517 1.584 -3.407 1.455 -2.889L0.877 -0.588Z' id='g0-110'/>
+<path d='M3.298 2.391C3.298 2.361 3.298 2.341 3.128 2.172C1.883 0.917 1.564 -0.966 1.564 -2.491C1.564 -4.224 1.943 -5.958 3.168 -7.203C3.298 -7.323 3.298 -7.342 3.298 -7.372C3.298 -7.442 3.258 -7.472 3.198 -7.472C3.098 -7.472 2.202 -6.795 1.614 -5.529C1.106 -4.433 0.986 -3.328 0.986 -2.491C0.986 -1.714 1.096 -0.508 1.644 0.618C2.242 1.843 3.098 2.491 3.198 2.491C3.258 2.491 3.298 2.461 3.298 2.391Z' id='g1-40'/>
+<path d='M2.879 -2.491C2.879 -3.268 2.77 -4.473 2.222 -5.599C1.624 -6.824 0.767 -7.472 0.667 -7.472C0.608 -7.472 0.568 -7.432 0.568 -7.372C0.568 -7.342 0.568 -7.323 0.757 -7.143C1.733 -6.157 2.301 -4.573 2.301 -2.491C2.301 -0.787 1.933 0.966 0.697 2.222C0.568 2.341 0.568 2.361 0.568 2.391C0.568 2.451 0.608 2.491 0.667 2.491C0.767 2.491 1.664 1.813 2.252 0.548C2.76 -0.548 2.879 -1.654 2.879 -2.491Z' id='g1-41'/>
+<path d='M3.522 -1.269H3.285C3.264 -1.116 3.194 -0.704 3.103 -0.635C3.048 -0.593 2.511 -0.593 2.413 -0.593H1.13C1.862 -1.241 2.106 -1.437 2.525 -1.764C3.041 -2.176 3.522 -2.608 3.522 -3.271C3.522 -4.115 2.783 -4.631 1.89 -4.631C1.025 -4.631 0.439 -4.024 0.439 -3.382C0.439 -3.027 0.739 -2.992 0.809 -2.992C0.976 -2.992 1.179 -3.11 1.179 -3.361C1.179 -3.487 1.13 -3.731 0.767 -3.731C0.983 -4.226 1.458 -4.38 1.785 -4.38C2.483 -4.38 2.845 -3.836 2.845 -3.271C2.845 -2.664 2.413 -2.183 2.19 -1.932L0.509 -0.272C0.439 -0.209 0.439 -0.195 0.439 0H3.313L3.522 -1.269Z' id='g2-50'/>
+<path d='M2.212 -1.714C1.345 -1.714 1.345 -2.71 1.345 -2.939C1.345 -3.208 1.355 -3.527 1.504 -3.776C1.584 -3.895 1.813 -4.174 2.212 -4.174C3.078 -4.174 3.078 -3.178 3.078 -2.949C3.078 -2.68 3.068 -2.361 2.919 -2.112C2.839 -1.993 2.61 -1.714 2.212 -1.714ZM1.056 -1.325C1.056 -1.365 1.056 -1.594 1.225 -1.793C1.614 -1.514 2.022 -1.484 2.212 -1.484C3.138 -1.484 3.826 -2.172 3.826 -2.939C3.826 -3.308 3.666 -3.676 3.417 -3.905C3.776 -4.244 4.134 -4.294 4.314 -4.294C4.334 -4.294 4.384 -4.294 4.413 -4.284C4.304 -4.244 4.254 -4.134 4.254 -4.015C4.254 -3.846 4.384 -3.726 4.543 -3.726C4.643 -3.726 4.832 -3.796 4.832 -4.025C4.832 -4.194 4.712 -4.513 4.324 -4.513C4.125 -4.513 3.686 -4.453 3.268 -4.045C2.849 -4.374 2.431 -4.403 2.212 -4.403C1.285 -4.403 0.598 -3.716 0.598 -2.949C0.598 -2.511 0.817 -2.132 1.066 -1.923C0.936 -1.773 0.757 -1.445 0.757 -1.096C0.757 -0.787 0.887 -0.408 1.196 -0.209C0.598 -0.04 0.279 0.389 0.279 0.787C0.279 1.504 1.265 2.052 2.481 2.052C3.656 2.052 4.692 1.544 4.692 0.767C4.692 0.418 4.553 -0.09 4.045 -0.369C3.517 -0.648 2.939 -0.648 2.331 -0.648C2.082 -0.648 1.654 -0.648 1.584 -0.658C1.265 -0.697 1.056 -1.006 1.056 -1.325ZM2.491 1.823C1.484 1.823 0.797 1.315 0.797 0.787C0.797 0.329 1.176 -0.04 1.614 -0.07H2.202C3.059 -0.07 4.174 -0.07 4.174 0.787C4.174 1.325 3.467 1.823 2.491 1.823Z' id='g1-103'/>
+<path d='M1.763 -6.914L0.329 -6.804V-6.496C1.026 -6.496 1.106 -6.426 1.106 -5.938V-0.757C1.106 -0.309 0.996 -0.309 0.329 -0.309V0C0.658 -0.01 1.186 -0.03 1.435 -0.03S2.172 -0.01 2.54 0V-0.309C1.873 -0.309 1.763 -0.309 1.763 -0.757V-6.914Z' id='g1-108'/>
+<path d='M4.692 -2.132C4.692 -3.407 3.696 -4.463 2.491 -4.463C1.245 -4.463 0.279 -3.377 0.279 -2.132C0.279 -0.847 1.315 0.11 2.481 0.11C3.686 0.11 4.692 -0.867 4.692 -2.132ZM2.491 -0.139C2.062 -0.139 1.624 -0.349 1.355 -0.807C1.106 -1.245 1.106 -1.853 1.106 -2.212C1.106 -2.6 1.106 -3.138 1.345 -3.577C1.614 -4.035 2.082 -4.244 2.481 -4.244C2.919 -4.244 3.347 -4.025 3.606 -3.597S3.866 -2.59 3.866 -2.212C3.866 -1.853 3.866 -1.315 3.646 -0.877C3.427 -0.428 2.989 -0.139 2.491 -0.139Z' id='g1-111'/>
+<path d='M2.022 -0.01C2.022 -0.667 1.773 -1.056 1.385 -1.056C1.056 -1.056 0.857 -0.807 0.857 -0.528C0.857 -0.259 1.056 0 1.385 0C1.504 0 1.634 -0.04 1.733 -0.13C1.763 -0.149 1.773 -0.159 1.783 -0.159S1.803 -0.149 1.803 -0.01C1.803 0.727 1.455 1.325 1.126 1.654C1.016 1.763 1.016 1.783 1.016 1.813C1.016 1.883 1.066 1.923 1.116 1.923C1.225 1.923 2.022 1.156 2.022 -0.01Z' id='g0-59'/>
+</defs>
+</svg>
+
+</body>
+
+</html>
