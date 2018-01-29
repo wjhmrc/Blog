@@ -20,6 +20,13 @@
 		<link rel="stylesheet" href="css/style-wide.css" />
 	</noscript>
 	<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+
+	<!-- Insert to your webpage before the </head> -->
+	<script src="js/jquery.js"></script>
+	<script src="js/amazingaudioplayer.js"></script>
+	<link rel="stylesheet" type="text/css" href="js/initaudioplayer-1.css">
+	<script src="js/initaudioplayer-1.js"></script>
+	<!-- End of head section HTML codes -->
 </head>
 <body class="landing">
 
@@ -63,12 +70,37 @@
 			<li><a href="https://github.com/wjhmrc" class="button special">Github</a></li>
 			<li><a href="AboutMe.html" class="button">关于我</a></li>
 		</ul>
+		<!-- Insert to your webpage where you want to display the audio player -->
+		<div id="amazingaudioplayer-1" style="display:block;position:relative;width:100%;max-width:420px;height:auto;margin:0px auto 0px;">
+				<ul class="amazingaudioplayer-audios" style="display:none;">
+						<li data-artist="" data-title="A Fine Frenzy - Almost Lover" data-album="" data-info="" data-image="" data-duration="300">
+								<div class="amazingaudioplayer-source" data-src="Music/A%20Fine%20Frenzy%20-%20Almost%20Lover.mp3" data-type="audio/mpeg" />
+						</li>
+						<li data-artist="" data-title="Green Day - Basket Case" data-album="" data-info="" data-image="" data-duration="0">
+								<div class="amazingaudioplayer-source" data-src="Music/Green%20Day%20-%20Basket%20Case.mp3" data-type="audio/mpeg" />
+						</li>
+						<li data-artist="" data-title="Ozzy Osbourne - Here for You" data-album="" data-info="" data-image="" data-duration="0">
+								<div class="amazingaudioplayer-source" data-src="Music/Ozzy%20Osbourne%20-%20Here%20for%20You.mp3" data-type="audio/mpeg" />
+						</li>
+						<li data-artist="" data-title="A Fine Frenzy - Almost Lover" data-album="" data-info="" data-image="" data-duration="300">
+								<div class="amazingaudioplayer-source" data-src="Music/Steelheart%20-%20She's%20Gone.mp3" data-type="audio/mpeg" />
+						</li>
+						<!-- <li data-artist="" data-title="Green Day - Basket Case" data-album="" data-info="" data-image="" data-duration="0">
+								<div class="amazingaudioplayer-source" data-src="Music/Green%20Day%20-%20Basket%20Case.mp3" data-type="audio/mpeg" />
+						</li>
+						<li data-artist="" data-title="Ozzy Osbourne - Here for You" data-album="" data-info="" data-image="" data-duration="0">
+								<div class="amazingaudioplayer-source" data-src="Music/Ozzy%20Osbourne%20-%20Here%20for%20You.mp3" data-type="audio/mpeg" />
+						</li> -->
+				</ul>
+		</div>
+		<!-- End of body section HTML codes -->
 	</section>
-	
+
+
 
 	<!-- Main -->
 	<section id="main" class="container">
-		
+
 		<section class="box special">
 			<header class="major">
 				<h2>学习 · 技术 · 随笔
@@ -81,7 +113,7 @@
 			</header>
 			<span class="image featured"><img src="images/pic01.jpg" alt="" /></span>
 		</section>
-		
+
 		<section class="box special features">
 			<div class="features-row">
 				<section>
@@ -113,7 +145,7 @@
 			</div>
 		</section><div class="copyrights">Collect from <a href="http://www.cssmoban.com/" >企业网站模板</a></div>
 	</section>
-	
+
 	<!-- CTA -->
 	<section id="cta">
 		<h2>技术网站分享</h2>
@@ -125,14 +157,14 @@
 		<a style="color: black" href="https://github.com/">终极神器:github</a>
 
 	</section>
-	
+
 	<!-- Footer -->
 	<footer id="footer">
 		<ul class="icons">
 			<li><a href="https://github.com/wjhmrc" class="icon fa-github"><span class="label">Github</span></a></li>
 			<li><a href="https://mp.weixin.qq.com/profile?src=3&timestamp=1513175472&ver=1&signature=wCYMd0R6AOqv3cXlFDB4qumjmQnIuddD6HaJuAumhtMvTkewWXpl8nOYqnwlZVDF9dxkDvATeODP898*xdlODw==" class="icon fa-weixin"><span class="label">WeiXin</span></a></li>
-			<li><a href="https://weibo.com/u/1951006995?refer_flag=1001030201_&is_hot=1" class="icon fa-weibo"><span class="label">Weibo</span></a></li>	
-			<li><a href="https://www.zhihu.com/people/mou-ruo-chen"><h5>知乎</h5></a></li>			
+			<li><a href="https://weibo.com/u/1951006995?refer_flag=1001030201_&is_hot=1" class="icon fa-weibo"><span class="label">Weibo</span></a></li>
+			<li><a href="https://www.zhihu.com/people/mou-ruo-chen"><h5>知乎</h5></a></li>
 		</ul>
 	</footer>
 
